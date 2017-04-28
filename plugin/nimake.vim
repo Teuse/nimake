@@ -33,7 +33,7 @@ endif
 
 " Create/Update ninja build folder (64bit only)
 function! s:MakeMaschine(rootPath)
-    let cmakeRoot = fnamemodify(l:rootPath, ":p")
+    let cmakeRoot = fnamemodify(a:rootPath, ":p")
 python << EOF
 
 import vim, sys
@@ -49,7 +49,7 @@ endfunction
  
 
 function! s:MakeMaschineYcm(rootPath)
-    let cmakeRoot = fnamemodify(l:rootPath, ":p")
+    let cmakeRoot = fnamemodify(a:rootPath, ":p")
 python << EOF
 
 import vim, sys

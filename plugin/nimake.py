@@ -23,14 +23,14 @@ def __runCmake(cmakePath, buildPath, args):
     import subprocess
     print("### %s" % cmakeCmd)
     print("### %s" % buildPath)
-    retCode = subprocess.check_call(cmakeCmd, cwd=buildPath, shell=True)
+    retCode = subprocess.check_call(cmakeCmd, cwd=buildPath, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     if retCode:
         print("Error code: %i" % retCode)
 
 #--------------------------------------------------------------------------
 def __copyYcmExtraConf(cmakePath):
     nimakeRoot = vim.eval('s:nimake_plugin_path')
-    ycmSrc     = os.path.join(nimakeRoot, 'plugin/ycm_extra_conf.py')
+    ycmSrc     = os.path.join(nimakeRoot, 'ycm_extra_conf.py')
     ycmDest    = os.path.join(cmakePath, '.ycm_extra_conf.py')
 
     if not os.path.isfile(ycmDest):
