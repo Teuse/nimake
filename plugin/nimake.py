@@ -47,7 +47,7 @@ def __isCmakeFile(cmakePath):
 
     parentCmakePath, tail = os.path.split(cmakePath)
     parentCmakeFile = os.path.join(parentCmakePath, 'CMakeLists.txt')
-    if not os.path.isfile(parentCmakeFile):
+    if os.path.isfile(parentCmakeFile):
         print("NIMAKE: There is a CMakeLists.txt file in the parent directory... your relativ path is wrong! ParentPath= %s" % parentCmakeFile)
         return False
 
@@ -55,14 +55,13 @@ def __isCmakeFile(cmakePath):
 
 #--------------------------------------------------------------------------
 def __configureNoUnity(cmakePath, noUnityFlag, buildType=''):
-    __copyYcmExtraConf(cmakePath)
-
     args = " -DCMAKE_EXPORT_COMPILE_COMMANDS=\"1\" -DCMAKE_OSX_ARCHITECTURES=\"x86_64\" -D" + noUnityFlag + "=\"OFF\""
     if buildType:
         args = args + " -DCMAKE_BUILD_TYPE=\"" + buildType + "\""
 
     buildPath = __buildPath(cmakePath, 'build_no_unity')
     __runCmake("../maschine", buildPath, args)
+    __copyYcmExtraConf(cmakePath)
 
 #--------------------------------------------------------------------------
 def __configureNinja(cmakePath, buildType=''):
