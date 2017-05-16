@@ -22,11 +22,12 @@ def __runCmake(cmakePath, buildPath, args):
     buildPath = os.path.abspath(buildPath)
 
     import subprocess
-    print("### %s" % cmakeCmd)
-    print("### %s" % buildPath)
+    print("NIMAKE: %s" % cmakeCmd)
     retCode = subprocess.check_call(cmakeCmd, cwd=buildPath, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     if retCode:
-        print("Error code: %i" % retCode)
+        print("NIMKKE: cmake failed! Error code: %i" % retCode)
+    else:
+        print("NIMAKE: successful")
 
 #--------------------------------------------------------------------------
 def __copyYcmExtraConf(cmakePath):
@@ -45,7 +46,7 @@ def __isCmakeFile(cmakePath):
         print("NIMAKE: Could't find CMakeLists.txt file at path: %s" % cmakePath)
         return False
 
-    parentCmakePath, tail = os.path.split(cmakePath)
+    parentCmakePath = os.path.dirname(cmakePath)
     parentCmakeFile = os.path.join(parentCmakePath, 'CMakeLists.txt')
     if os.path.isfile(parentCmakeFile):
         print("NIMAKE: There is a CMakeLists.txt file in the parent directory... your relativ path is wrong! ParentPath= %s" % parentCmakeFile)
@@ -77,21 +78,25 @@ def __configureNinja(cmakePath, buildType=''):
 #--- main functions
 #--------------------------------------------------------------------------
 def ycmMaschine(cmakePath):
+    cmakePath = os.path.abspath(cmakePath)
     if __isCmakeFile(cmakePath):
         __configureNoUnity(cmakePath, 'MASCHINE_UNITY_BUILDS')
 
 #--------------------------------------------------------------------------
 def ninjaDebug(cmakePath):
+    cmakePath = os.path.abspath(cmakePath)
     if __isCmakeFile(cmakePath):
         __configureNinja(cmakePath, 'Debug')
 
 #--------------------------------------------------------------------------
 def ninjaRelWithDebug(cmakePath):
+    cmakePath = os.path.abspath(cmakePath)
     if __isCmakeFile(cmakePath):
         __configureNinja(cmakePath)
 
 #--------------------------------------------------------------------------
 def ninjaRelease(cmakePath):
+    cmakePath = os.path.abspath(cmakePath)
     if __isCmakeFile(cmakePath):
         __configureNinja(cmakePath, 'Release')
 
