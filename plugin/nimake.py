@@ -19,6 +19,7 @@ def __buildPath(cmakePath, folderName):
 def __runCmake(cmakePath, buildPath, args):
     __createDir(buildPath)
     cmakeCmd = "cmake -G\"Ninja\" " + cmakePath + " " + args
+    buildPath = os.path.abspath(buildPath)
 
     import subprocess
     print("### %s" % cmakeCmd)
@@ -42,7 +43,15 @@ def __isCmakeFile(cmakePath):
     cmakeFile = os.path.join(cmakePath, 'CMakeLists.txt')
     if not os.path.isfile(cmakeFile):
         print("NIMAKE: Could't find CMakeLists.txt file at path: %s" % cmakePath)
-    return os.path.isfile(cmakeFile)
+        return False
+
+    parentCmakePath, tail = os.path.split(cmakePath)
+    parentCmakeFile = os.path.join(parentCmakePath, 'CMakeLists.txt')
+    if not os.path.isfile(parentCmakeFile):
+        print("NIMAKE: There is a CMakeLists.txt file in the parent directory... your relativ path is wrong! ParentPath= %s" % parentCmakeFile)
+        return False
+
+    return True
 
 #--------------------------------------------------------------------------
 def __configureNoUnity(cmakePath, noUnityFlag, buildType=''):
@@ -53,7 +62,6 @@ def __configureNoUnity(cmakePath, noUnityFlag, buildType=''):
         args = args + " -DCMAKE_BUILD_TYPE=\"" + buildType + "\""
 
     buildPath = __buildPath(cmakePath, 'build_no_unity')
-    print("NIMAKE: runCmake(%s, %s, ...)" % (cmakePath, buildPath))
     __runCmake("../maschine", buildPath, args)
 
 #--------------------------------------------------------------------------
@@ -63,7 +71,6 @@ def __configureNinja(cmakePath, buildType=''):
         args = args + " -DCMAKE_BUILD_TYPE=\"" + buildType + "\""
 
     buildPath = __buildPath(cmakePath, 'build_ninja_'+buildType)
-    print("NIMAKE: runCmake(%s, %s, ...)" % (cmakePath, buildPath))
     __runCmake("../maschine", buildPath, args)
 
 
