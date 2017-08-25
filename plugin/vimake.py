@@ -76,7 +76,7 @@ def copyYcmConfig(cmakePath):
 def makeMasYcm(cmakePath):
     cmakePath = os.path.abspath(cmakePath)
     if __isCmakeFile(cmakePath):
-        __configureNinja(cmakePath, 'build_no_unity', '-DMASCHINE_UNITY_BUILDS=OFF')
+        __configureNinja(cmakePath, 'build_no_unity', '-DMASCHINE_UNITY_BUILDS=OFF -DMASCHINELIB_UNITY_BUILDS=OFF -DNIDEVICES_UNITY_BUILDS=OFF -DNIDEVICES_UNITY_BUILDS=OFF -DNIHOSTING_UNITY_BUILDS=OFF -DNIMEDIA_UNITY_BUILDS=OFF -DNI_UNITY_BUILDS=OFF')
         __copyYcmExtraConf(cmakePath)
 
 #--------------------------------------------------------------------------
