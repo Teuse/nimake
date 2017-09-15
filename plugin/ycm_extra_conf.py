@@ -19,6 +19,9 @@ def LoadSystemIncludes():
 SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', '.m', '.mm' ]
 scriptPath = os.path.dirname(os.path.abspath(__file__));
 compilation_database_folder = os.path.join(scriptPath, '../build_no_unity')
+if not os.path.exists(compilation_database_folder):
+    compilation_database_folder = os.path.join(scriptPath, '../build')
+
 database = None if not os.path.exists(compilation_database_folder) else ycm_core.CompilationDatabase(compilation_database_folder)
 flags = [
     '-Wall',
